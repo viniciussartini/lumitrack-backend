@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.backend.Lumitrack.models.User;
 import br.com.backend.Lumitrack.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class UserService {
@@ -23,7 +24,7 @@ public class UserService {
 
     public User findById(Long id) {
         Optional<User> userById = userRepository.findById(id);
-        return userById.orElseThrow(() -> new RuntimeException());  // Criar uma exceção personalizada
+        return userById.orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado."));
     }
 
     public User create(User user) {
@@ -36,7 +37,7 @@ public class UserService {
             updateEntity(entity, user);
             return userRepository.save(entity);
         } catch (Exception e) {
-            throw new RuntimeException(e); // Criar uma exceção personalizada
+            throw new EntityNotFoundException("Usuário não encontrado.");
         }
     }
 

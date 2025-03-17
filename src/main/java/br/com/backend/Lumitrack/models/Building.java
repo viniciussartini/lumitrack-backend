@@ -2,6 +2,8 @@ package br.com.backend.Lumitrack.models;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.com.backend.Lumitrack.models.enums.BuildingType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,6 +24,7 @@ public class Building implements Serializable{
     private Long id;
     private Integer buildingType;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -114,12 +117,21 @@ public class Building implements Serializable{
     public void setTotalArea(Double totalArea) {
         this.totalArea = totalArea;
     }
+
+    public User getUser() {
+        return user;
+    }
+    
+    public void setUser(User user) {
+        this.user = user;
+    }
 /*
     public List<Area> getAreas() {
         return areas;
     }
 
  */
+
 
     @Override
     public int hashCode() {

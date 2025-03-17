@@ -31,24 +31,30 @@ public class BuildingController {
         return ResponseEntity.ok().body(buildingsList);
     }
 
-    @PostMapping
-    public ResponseEntity<Building> create(@RequestBody Building building) {
-        building = buildingService.create(building);
+    @GetMapping("/{id}")
+    public ResponseEntity<Building> findById(@PathVariable Long id) {
+        Building buildingById = buildingService.findById(id);
+        return ResponseEntity.ok().body(buildingById);
+    }
+
+    @PostMapping("/user/{userId}")
+    public ResponseEntity<Building> create(@PathVariable Long userId, @RequestBody Building building) {
+        building = buildingService.create(userId, building);
         URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{id}")
+                .fromCurrentRequest().path("/user/{id}")
                 .buildAndExpand(building.getId()).toUri();
         return ResponseEntity.created(uri).body(building);
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<Building> update(@PathVariable Long id, @RequestBody Building building) {
-        building = buildingService.update(id, building);
+    @PutMapping("/user/{userId}/building/{id}")
+    public ResponseEntity<Building> update(@PathVariable Long userId, @PathVariable Long id, @RequestBody Building building) {
+        building = buildingService.update(userId, id, building);
         return ResponseEntity.ok().body(building);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        buildingService.delete(id);
+    @DeleteMapping("/user/{userId}/building/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long userId, @PathVariable Long id) {
+        buildingService.delete(userId, id);
         return ResponseEntity.noContent().build();
     }
 }

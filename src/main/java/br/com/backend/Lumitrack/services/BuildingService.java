@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import br.com.backend.Lumitrack.models.Building;
+import br.com.backend.Lumitrack.models.User;
 import br.com.backend.Lumitrack.repositories.BuildingRepository;
+import br.com.backend.Lumitrack.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
+
 
 @Service
 public class BuildingService {
@@ -17,46 +19,51 @@ public class BuildingService {
     @Autowired
     private BuildingRepository buildingRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public List<Building> findAll() {
         return buildingRepository.findAll();
     }
 
     public Building findById(Long id) {
         Optional<Building> buildingById = buildingRepository.findById(id);
-        return buildingById.orElseThrow(() -> new RuntimeException());  // Criar uma exceção personalizada
+        return buildingById.orElseThrow(() -> new EntityNotFoundException("Edificação não encontrada."));
     }
 
-    public Building create(Building building) {
-        return buildingRepository.save(building);
+    public Building create(Long userId, Building building) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado."));
+        building.setUser(user);
+        return building = buildingRepository.save(building);
     }
 
-    public Building update(Long id, Building building) {
-        try {
-            Building entity = buildingRepository.getReferenceById(id);
-            updateEntity(entity, building);
-            return buildingRepository.save(entity);
-        } catch (Exception e) {
-            throw new RuntimeException(e); // Criar uma exceção personalizada
+    public Building update(Long userId, Long id, Building building) {
+        Building existBuilding = buildingRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Edificação não encontrada."));
+        if(existBuilding.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("Edificação não pertence à este usuário.");
         }
+        updateEntity(existBuilding, building);
+        return buildingRepository.save(existBuilding);
     }
 
-    private void updateEntity(Building entity, Building building) {
-        entity.setBuildingType(building.getBuildingType());
-        entity.setName(building.getName());
-        entity.setAddress(building.getAddress());
-        entity.setCep(building.getCep());
-        entity.setCity(building.getCity());
-        entity.setState(building.getState());
-        entity.setTotalArea(building.getTotalArea());
+    private void updateEntity(Building existBuilding, Building building) {
+        existBuilding.setBuildingType(building.getBuildingType());
+        existBuilding.setName(building.getName());
+        existBuilding.setAddress(building.getAddress());
+        existBuilding.setCep(building.getCep());
+        existBuilding.setCity(building.getCity());
+        existBuilding.setState(building.getState());
+        existBuilding.setTotalArea(building.getTotalArea());
     }
 
-    public void delete(Long id) {
-        try {
-            buildingRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
-            throw new RuntimeException(); // Criar uma exceção personalizada
-        } catch (DataIntegrityViolationException e){
-            throw new RuntimeException(); // Criar uma exceção personalizada
+    public void delete(Long userId, Long id) {
+        Building building = buildingRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Edificação não encontrada."));
+        if(!building.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("Edificação não pertence à este usuário.");
         }
+        buildingRepository.delete(building);
     }
 }

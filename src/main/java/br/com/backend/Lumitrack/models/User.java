@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import br.com.backend.Lumitrack.models.enums.Profile;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -29,7 +27,6 @@ public class User implements Serializable{
     private String password;
     private Integer profile;
 
-    //@JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Building> buildings = new ArrayList<>(); 
 
