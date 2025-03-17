@@ -1,12 +1,16 @@
 package br.com.backend.Lumitrack.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.com.backend.Lumitrack.models.enums.Profile;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,7 +25,10 @@ public class User implements Serializable{
     private String name;
     private String email;
     private String password;
-    private Profile profile;
+    private Integer profile;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Building> buildings = new ArrayList<>(); 
 
     public User(){}
 
@@ -30,7 +37,7 @@ public class User implements Serializable{
         this.name = name;
         this.email = email;
         this.password = password;
-        this.profile = profile;
+        setProfile(profile);
     }
 
     public Long getId() {
@@ -58,10 +65,16 @@ public class User implements Serializable{
         this.password = password;
     }
     public Profile getProfile() {
-        return profile;
+        return Profile.valueOf(profile);
     }
     public void setProfile(Profile profile) {
-        this.profile = profile;
+        if(profile != null) {
+            this.profile = profile.getCode();
+        }
+    }
+
+    public List<Building> getBuildings() {
+        return buildings;
     }
 
     @Override
@@ -88,5 +101,5 @@ public class User implements Serializable{
             return false;
         return true;
     }
-    
+
 }

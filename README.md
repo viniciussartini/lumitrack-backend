@@ -10,7 +10,7 @@ LumiTrack é uma aplicação inteligente que monitora o consumo de energia elét
 
 ## Tecnologias Utilizadas
 
-![Logo Java](./src/public/logo-java.svg) ![Logo Spring Boot](./src/public/logo-spring-boot.svg) ![Logo Maven](./src/public/logo-maven.svg) ![Logo PostgreSQL](./src/public/logo-postgresql.svg)
+![Logo Java](./src/public/logo-java.svg) ![Logo Spring Boot](./src/public/logo-spring-boot.svg) ![Logo Maven](./src/public/logo-maven.svg) ![Logo PostgreSQL](./src/public/logo-postgresql.svg) ![Logo H2](./src/public/logo-h2.png)
 
 ## Controle de Versão
 
@@ -33,11 +33,14 @@ Para issues segue a seguinte convenção:
 Utilizado o Github Projetc para organização das tarefas do projeto, estruturado com as seguintes listas:
 
 - **Backlog:** recebe as tarefas a serem trabalhadas e representa o Backlog do produto.
-- **To Do:** representa os itens que estão sendo trabalhados.
+- **To Do:** representa as tarefas que podem ser iniciadas.
 - **In progress:** tarefas iniciadas.
 - **In Review:** tarefas em revisão.
+- **Done:** tarefas finalizada.
 
 ## Requisitos
+
+(REVISAR E ATUALIZAR)
 
 ### Requisitos Funcionais
 
@@ -75,25 +78,27 @@ Utilizado o Github Projetc para organização das tarefas do projeto, estruturad
 
 ### Diagrama de Classes
 
+(REVISAR E ATUALIZAR)
+
 ```mermaid
 classDiagram
 
     direction LR
 
-    Usuario "1"-- "*" Edificacao
-    Edificacao "1" *-- "*"Comodo
-    Comodo "1..*"-- "0..*" Aparelho
+    User "1"-- "*" Building
+    Building "1" *-- "*"Area
+    Area "1..*"-- "0..*" Device
 
-    class Usuario {
+    class User {
         -Integer Id
         -String Nome
         -String Email
         -String Senha
-        +CadastrarUsuario()
+        +CadastrarUser()
         +VisualizarEdificacoes()
     }
     
-    class Edificacao {
+    class Building {
         -Integer Id
         -String Nome
         -String Rua
@@ -103,38 +108,42 @@ classDiagram
         +ConsumoTotal()
         +GerarRelatorio() void
     }
-    class Aparelho {
+    class Device {
         -Integer Id
         -String Nome
         -Double Potencia
         -Double Tensao
         +CadastrarAparelho()void
     }
-    class Comodo {
+    class Area {
         -Integer Id
         -String Nome
         +CalcularConsumo()double
         +GerarRelatorio()void
-        +VincularAparelho()Aparelho
+        +VincularAparelho()Device
     }
 ```
 
 ## Modelo ER (Projeto Conceitual)
 
+(REVISAR E ATUALIZAR)
+
 ![Modelo ER do Lumitrack]()
 
 ## Projeto da Base de Dados
 
+(REVISAR E ATUALIZAR)
+
 ```mermaid
 erDiagram
 
-Usuario ||--|{Edificacao : ""
-Edificacao ||--|{Comodo : ""
-Comodo ||--|{Aparelho : ""
-Comodo ||--|{Consumo : ""
-Aparelho ||--|{Consumo : ""
+User ||--|{Building : ""
+Building ||--|{Area : ""
+Area ||--|{Device : ""
+Area ||--|{Consumption : ""
+Device ||--|{Consumption : ""
 
-Usuario {
+User {
     Int id PK
     Char nome
     Char email
@@ -142,23 +151,23 @@ Usuario {
     Char senha
 }
 
-Edificacao {
+Building {
     Int id PK
     Char nome
     Char rua
     Char cidade
     Char estado
     Char cep
-    Int usuario_id FK
+    Int User_id FK
 }
 
-Comodo {
+Area {
     Int id PK
     Char nome
-    Int edificacao_id FK
+    Int Building_id FK
 }
 
-Aparelho {
+Device {
     Int id PK
     Char nome
     Double potencia
@@ -166,12 +175,29 @@ Aparelho {
     Int comodo_id FK
 }
 
-Consumo {
+Consumption {
     Int id PK
     DateTime data_registro
     Int uso_minuto
-    Double consumo_aparelho
+    Double Consumption_aparelho
     Int comodo_id FK
     Int aparelho_id FK
 }
 ```
+
+## Teste da API
+
+1. Abra o Postman.
+2. Envie as requisições para os endpoints da API.
+    **Usuários:**
+    `GET /users` Lista todos os usuários.
+    `GET /users/{id}` Lista o usuário pelo id informado.
+    `POST /users`: Cadastra um novo usuário.
+    `PUT /users/{id}`: Atualiza as informações do usuário com id informado.
+    `DELETE /users/{id}`: Deleta usuário através do id informado.
+    **Edificações:**
+    `GET /buildings` Lista todas as edificações.
+    `GET /buildings/{id}` Lista a edificação pelo id informado.
+    `POST /buildings/user/{userId}`: Cadastra uma nova edificação vinculado a um usuário específico.
+    `PUT /buildings/user/{userId}/building/{id}`: Atualiza as informações da edificação com id informado de um usuário específico.
+    `DELETE /buildings/user/{userId}/building/{id}`: Deleta a edificação com id informado de um usuário específico.
