@@ -38,9 +38,7 @@ Utilizado o Github Projetc para organização das tarefas do projeto, estruturad
 - **In Review:** tarefas em revisão.
 - **Done:** tarefas finalizada.
 
-## Requisitos
-
-(REVISAR E ATUALIZAR)
+## Requisitos (REVISAR E ATUALIZAR)
 
 ### Requisitos Funcionais
 
@@ -76,9 +74,7 @@ Utilizado o Github Projetc para organização das tarefas do projeto, estruturad
 
 ## Arquitetura da Solução
 
-### Diagrama de Classes
-
-(REVISAR E ATUALIZAR)
+### Diagrama de Classes (REVISAR E ATUALIZAR)
 
 ```mermaid
 classDiagram
@@ -86,53 +82,52 @@ classDiagram
     direction LR
 
     User "1"-- "*" Building
-    Building "1" *-- "*"Area
-    Area "1..*"-- "0..*" Device
+    Building "1" <-- "*"Area
+    Area "1..*" <-- "0..*" Device
 
     class User {
-        -Integer Id
-        -String Nome
-        -String Email
-        -String Senha
-        +CadastrarUser()
-        +VisualizarEdificacoes()
+        -Long id
+        -String name
+        -String email
+        -String password
+        -Integer profile
+        -List~Building~ buildings
     }
     
     class Building {
-        -Integer Id
-        -String Nome
-        -String Rua
-        -String CEP
-        -String Cidade
-        -String Estado
-        +ConsumoTotal()
-        +GerarRelatorio() void
-    }
-    class Device {
-        -Integer Id
-        -String Nome
-        -Double Potencia
-        -Double Tensao
-        +CadastrarAparelho()void
+        -Long id
+        -Integer buildingType
+        -User user
+        -String name
+        -String address
+        -String cep
+        -String city
+        -String state
+        -Double totalArea
+        -List~Area~ areas
     }
     class Area {
-        -Integer Id
-        -String Nome
-        +CalcularConsumo()double
-        +GerarRelatorio()void
-        +VincularAparelho()Device
+        -Long id
+        -String name
+        -Double squareArea
+        -List~Device~ devices
     }
+    class Device {
+        -Long id
+        -String name
+        -String brand
+        -String model
+        -Double voltage
+        -Double power
+    }
+
 ```
 
-## Modelo ER (Projeto Conceitual)
-
-(REVISAR E ATUALIZAR)
+## Modelo ER (Projeto Conceitual) (REVISAR E ATUALIZAR)
 
 ![Modelo ER do Lumitrack]()
 
-## Projeto da Base de Dados
-
-(REVISAR E ATUALIZAR)
+## Projeto da Base de Dados (REVISAR E ATUALIZAR)
 
 ```mermaid
 erDiagram
@@ -189,15 +184,21 @@ Consumption {
 
 1. Abra o Postman.
 2. Envie as requisições para os endpoints da API.
-    **Usuários:**
-    `GET /users` Lista todos os usuários.
-    `GET /users/{id}` Lista o usuário pelo id informado.
-    `POST /users`: Cadastra um novo usuário.
-    `PUT /users/{id}`: Atualiza as informações do usuário com id informado.
-    `DELETE /users/{id}`: Deleta usuário através do id informado.
-    **Edificações:**
-    `GET /buildings` Lista todas as edificações.
-    `GET /buildings/{id}` Lista a edificação pelo id informado.
-    `POST /buildings/user/{userId}`: Cadastra uma nova edificação vinculado a um usuário específico.
-    `PUT /buildings/user/{userId}/building/{id}`: Atualiza as informações da edificação com id informado de um usuário específico.
-    `DELETE /buildings/user/{userId}/building/{id}`: Deleta a edificação com id informado de um usuário específico.
+    - **Usuários:**
+        - `GET /users` Lista todos os usuários.
+        - `GET /users/{id}` Lista o usuário pelo id informado.
+        - `POST /users`: Cadastra um novo usuário.
+        - `PUT /users/{id}`: Atualiza as informações do usuário com id informado.
+        - `DELETE /users/{id}`: Deleta usuário através do id informado.
+    - **Edificações:**
+        - `GET /buildings` Lista todas as edificações.
+        - `GET /buildings/{id}` Lista a edificação pelo id informado.
+        - `POST /buildings/user/{userId}`: Cadastra uma nova edificação vinculado a um usuário específico.
+        - `PUT /buildings/user/{userId}/building/{id}`: Atualiza as informações da edificação com id informado de um usuário específico.
+        - `DELETE /buildings/user/{userId}/building/{id}`: Deleta a edificação com id informado de um usuário específico.
+    - **Areas**
+        - `GET /areas` Lista todas as áreas.
+        - `GET /areas/{id}` Lista a área pelo id informado.
+        - `POST /areas/building/{buildingId}`: Cadastra uma nova área vinculada a uma edificação específica.
+        - `PUT /areas/building/{buildingId}/area/{id}`: Atualiza as informações da área com id informado de uma edificação específica.
+        - `DELETE /areas/building/{buildingId}/area/{id}`: Deleta a edificação com id informado de um usuário específico.
