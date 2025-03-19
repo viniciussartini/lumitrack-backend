@@ -31,28 +31,28 @@ public class BuildingController {
         return ResponseEntity.ok().body(buildingsList);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<Building> findById(@PathVariable Long id) {
         Building buildingById = buildingService.findById(id);
         return ResponseEntity.ok().body(buildingById);
     }
 
-    @PostMapping("/user/{userId}")
+    @PostMapping(value = "/user/{userId}")
     public ResponseEntity<Building> create(@PathVariable Long userId, @RequestBody Building building) {
         building = buildingService.create(userId, building);
         URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/user/{id}")
+                .fromCurrentRequest().path("/user/{userId}")
                 .buildAndExpand(building.getId()).toUri();
         return ResponseEntity.created(uri).body(building);
     }
 
-    @PutMapping("/user/{userId}/building/{id}")
+    @PutMapping(value = "/user/{userId}/building/{id}")
     public ResponseEntity<Building> update(@PathVariable Long userId, @PathVariable Long id, @RequestBody Building building) {
         building = buildingService.update(userId, id, building);
         return ResponseEntity.ok().body(building);
     }
 
-    @DeleteMapping("/user/{userId}/building/{id}")
+    @DeleteMapping(value = "/user/{userId}/building/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long userId, @PathVariable Long id) {
         buildingService.delete(userId, id);
         return ResponseEntity.noContent().build();
