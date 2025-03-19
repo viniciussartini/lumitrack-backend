@@ -201,10 +201,10 @@ Consumption {
         - `GET /areas/{id}` Lista a área pelo id informado.
         - `POST /areas/building/{buildingId}`: Cadastra uma nova área vinculada a uma edificação específica.
         - `PUT /areas/building/{buildingId}/area/{areaId}`: Atualiza as informações da área com id informado de uma edificação específica.
-        - `DELETE /areas/building/{buildingId}/area/{areaId}`: Deleta a edificação com id informado de um usuário específico.
+        - `DELETE /areas/building/{buildingId}/area/{areaId}`: Deleta a área com id informado de uma edificação específica.
     - **Aparelhos**
-        - `GET /devices` Lista todas as áreas.
-        - `GET /devices/{id}` Lista a área pelo id informado.
-        - `POST /devices/area/{areaId}`: Cadastra uma nova área vinculada a uma edificação específica.
-        - `PUT /devices/area/{areaId}/device/{deviceId}`: Atualiza as informações da área com id informado de uma edificação específica.
-        - `DELETE /devices/area/{areaId}/device/{deviceId}`: Deleta a edificação com id informado de um usuário específico.
+        - `GET /devices` Lista todos os aparelhos.
+        - `GET /devices/{id}` Lista o aparelho pelo id informado.
+        - `POST /devices/area/{areaId}`: Cadastra um novo aparelho vinculado a uma área específica.
+        - `PUT /devices/area/{areaId}/device/{deviceId}`: Atualiza as informações do aparelho com id informado de uma área específica.
+        - `DELETE /devices/area/{areaId}/device/{deviceId}`: Deleta o aparelho com id informado de uma área específica.
