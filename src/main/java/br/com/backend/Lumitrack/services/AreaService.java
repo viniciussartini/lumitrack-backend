@@ -40,7 +40,7 @@ public class AreaService {
     public Area update(Long buildingId, Long id, Area area) {
         Area existingArea = areaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Área não encontrada."));
-        if(existingArea.getBuilding().getId().equals(buildingId)) {
+        if(!existingArea.getBuilding().getId().equals(buildingId)) {
             throw new IllegalStateException("Área não pertence à esta edificação.");
         }
         updateEntity(existingArea, area);

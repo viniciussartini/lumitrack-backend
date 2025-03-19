@@ -9,10 +9,12 @@ import org.springframework.context.annotation.Profile;
 
 import br.com.backend.Lumitrack.models.Area;
 import br.com.backend.Lumitrack.models.Building;
+import br.com.backend.Lumitrack.models.Device;
 import br.com.backend.Lumitrack.models.User;
 import br.com.backend.Lumitrack.models.enums.BuildingType;
 import br.com.backend.Lumitrack.repositories.AreaRepository;
 import br.com.backend.Lumitrack.repositories.BuildingRepository;
+import br.com.backend.Lumitrack.repositories.DeviceRepository;
 import br.com.backend.Lumitrack.repositories.UserRepository;
 
 @Configuration
@@ -28,6 +30,9 @@ public class TestConfig implements CommandLineRunner{
     @Autowired
     private AreaRepository areaRepository;
 
+    @Autowired
+    private DeviceRepository deviceRepository;
+
     @Override
     public void run(String... args) throws Exception {
         User admin = new User(null, "Admin", "admin@email.com", "1234", br.com.backend.Lumitrack.models.enums.Profile.ADMIN);
@@ -41,6 +46,10 @@ public class TestConfig implements CommandLineRunner{
         Area area1 = new Area(null, "Sala", 12.0, building2);
         Area area2= new Area(null, "Quarto", 16.0, building2);
         areaRepository.saveAll(Arrays.asList(area1,area2));
+
+        Device device1 = new Device(null, "Televisão", "Samsung", "Braba", 127.0, 200.0, area2);
+        Device device2 = new Device(null, "Lâmpada", "Avant", "Braba", 127.0, 12.0, area2);
+        deviceRepository.saveAll(Arrays.asList(device1, device2));
     }
 
     
