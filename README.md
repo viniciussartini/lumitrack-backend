@@ -194,11 +194,17 @@ Consumption {
         - `GET /buildings` Lista todas as edificações.
         - `GET /buildings/{id}` Lista a edificação pelo id informado.
         - `POST /buildings/user/{userId}`: Cadastra uma nova edificação vinculado a um usuário específico.
-        - `PUT /buildings/user/{userId}/building/{id}`: Atualiza as informações da edificação com id informado de um usuário específico.
-        - `DELETE /buildings/user/{userId}/building/{id}`: Deleta a edificação com id informado de um usuário específico.
+        - `PUT /buildings/user/{userId}/building/{buildingId}`: Atualiza as informações da edificação com id informado de um usuário específico.
+        - `DELETE /buildings/user/{userId}/building/{buildingId}`: Deleta a edificação com id informado de um usuário específico.
     - **Areas**
         - `GET /areas` Lista todas as áreas.
         - `GET /areas/{id}` Lista a área pelo id informado.
         - `POST /areas/building/{buildingId}`: Cadastra uma nova área vinculada a uma edificação específica.
-        - `PUT /areas/building/{buildingId}/area/{id}`: Atualiza as informações da área com id informado de uma edificação específica.
-        - `DELETE /areas/building/{buildingId}/area/{id}`: Deleta a edificação com id informado de um usuário específico.
+        - `PUT /areas/building/{buildingId}/area/{areaId}`: Atualiza as informações da área com id informado de uma edificação específica.
+        - `DELETE /areas/building/{buildingId}/area/{areaId}`: Deleta a edificação com id informado de um usuário específico.
+    - **Aparelhos**
+        - `GET /devices` Lista todas as áreas.
+        - `GET /devices/{id}` Lista a área pelo id informado.
+        - `POST /devices/area/{areaId}`: Cadastra uma nova área vinculada a uma edificação específica.
+        - `PUT /devices/area/{areaId}/device/{deviceId}`: Atualiza as informações da área com id informado de uma edificação específica.
+        - `DELETE /devices/area/{areaId}/device/{deviceId}`: Deleta a edificação com id informado de um usuário específico.
