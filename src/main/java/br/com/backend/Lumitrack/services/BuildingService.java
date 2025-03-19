@@ -41,7 +41,7 @@ public class BuildingService {
     public Building update(Long userId, Long id, Building building) {
         Building existBuilding = buildingRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Edificação não encontrada."));
-        if(existBuilding.getUser().getId().equals(userId)) {
+        if(!existBuilding.getUser().getId().equals(userId)) {
             throw new IllegalStateException("Edificação não pertence à este usuário.");
         }
         updateEntity(existBuilding, building);
