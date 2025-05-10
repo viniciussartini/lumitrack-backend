@@ -1,8 +1,10 @@
 package br.com.backend.Lumitrack.models;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -79,6 +81,18 @@ public class Area implements Serializable{
 
     public List<Device> getDevices() {
         return devices;
+    }
+
+    public TreeMap<Instant, Double> getDailyConsumption() {
+        TreeMap<Instant, Double> areaDailyConsumption = new TreeMap<>();
+        for(Device device : devices) {
+            TreeMap<Instant, Double> deviceConsumption = device.getDailyConsumption();
+            for(Instant date : deviceConsumption.keySet()) {
+                Double consumptionValue = deviceConsumption.get(date);
+                areaDailyConsumption.merge(date, consumptionValue, Double::sum);
+            }
+        }
+        return areaDailyConsumption;
     }
 
     @Override
