@@ -1,17 +1,21 @@
 package br.com.backend.Lumitrack.models;
 
 import java.io.Serializable;
-//import java.util.ArrayList;
-//import java.util.List;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -28,13 +32,14 @@ public class Device implements Serializable{
     private String model;
     private Double voltage;
     private Double power;
-
+    
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "area_id")
     private Area area;
-
-    //private List<Consumption> consumptions = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
+    private List<Consumption> consumptions = new ArrayList<>();
 
     public Device(){}
 
@@ -102,11 +107,21 @@ public class Device implements Serializable{
 
     public void setArea(Area area) {
         this.area = area;
-    }
-/* 
+    } 
+
     public List<Consumption> getConsumptions() {
         return consumptions;
-    }*/
+    }
+
+    public TreeMap<Instant, Double> getDailyConsumption() {
+        TreeMap<Instant, Double> dailyConsumption = new TreeMap<>();
+        for(Consumption consumption : consumptions) {
+            Instant date = consumption.getData();
+            Double consumptionValue = ((consumption.getUsageTime()/60) * this.power)/1000;
+            dailyConsumption.merge(date, consumptionValue, Double::sum);
+        }
+        return dailyConsumption;
+    }
 
     @Override
     public int hashCode() {

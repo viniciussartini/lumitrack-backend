@@ -1,8 +1,10 @@
 package br.com.backend.Lumitrack.models;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -136,6 +138,18 @@ public class Building implements Serializable{
         return areas;
     }
 
+    public TreeMap<Instant, Double> getDailyConsumption() {
+        TreeMap<Instant, Double> buildingDailyConsumption = new TreeMap<>();
+        for(Area area : areas) {
+            TreeMap<Instant, Double> areaConsumption = area.getDailyConsumption();
+            for(Instant date : areaConsumption.keySet()) {
+                Double consumptionValue = areaConsumption.get(date);
+                buildingDailyConsumption.merge(date, consumptionValue, Double::sum);
+            }
+        }
+        return buildingDailyConsumption;
+    }
+    
     @Override
     public int hashCode() {
         final int prime = 31;
