@@ -48,7 +48,7 @@ public class ConsumptionService {
     private void updateEntity(Consumption existingConsumption, Consumption consumption) {
         existingConsumption.setData(consumption.getData());
         existingConsumption.setUsageTime(consumption.getUsageTime());
-        existingConsumption.setDailyConsumption(consumption.getDailyConsumption());
+        //existingConsumption.setDailyConsumption(consumption.getDailyConsumption());
     }
 
     public void delete(Long deviceId, Long id) {

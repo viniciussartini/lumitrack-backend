@@ -1,8 +1,10 @@
 package br.com.backend.Lumitrack.models;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -30,12 +32,12 @@ public class Device implements Serializable{
     private String model;
     private Double voltage;
     private Double power;
-
+    
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "area_id")
     private Area area;
-
+    
     @OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
     private List<Consumption> consumptions = new ArrayList<>();
 
@@ -106,8 +108,19 @@ public class Device implements Serializable{
     public void setArea(Area area) {
         this.area = area;
     } 
+
     public List<Consumption> getConsumptions() {
         return consumptions;
+    }
+
+    public TreeMap<Instant, Double> getDailyConsumption() {
+        TreeMap<Instant, Double> dailyConsumption = new TreeMap<>();
+        for(Consumption consumption : consumptions) {
+            Instant date = consumption.getData();
+            Double consumptionValue = ((consumption.getUsageTime()/60) * this.power)/1000;
+            dailyConsumption.merge(date, consumptionValue, Double::sum);
+        }
+        return dailyConsumption;
     }
 
     @Override

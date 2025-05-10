@@ -24,7 +24,6 @@ public class Consumption implements Serializable{
     private Long id;
     private Instant data;
     public Double usageTime;
-    public Double dailyConsumption;
 
     @JsonIgnore
     @ManyToOne
@@ -33,11 +32,10 @@ public class Consumption implements Serializable{
 
     public Consumption(){}
 
-    public Consumption(Long id, Instant data, Double usageTime, Double dailyConsumption, Device device) {
+    public Consumption(Long id, Instant data, Double usageTime, Device device) {
         this.id = id;
         this.data = data;
         this.usageTime = usageTime;
-        this.dailyConsumption = dailyConsumption;
         this.device = device;
     }
 
@@ -63,14 +61,6 @@ public class Consumption implements Serializable{
 
     public void setUsageTime(Double usageTime) {
         this.usageTime = usageTime;
-    }
-
-    public Double getDailyConsumption() {
-        return dailyConsumption;
-    }
-
-    public void setDailyConsumption(Double dailyConsumption) {
-        this.dailyConsumption = dailyConsumption;
     }
 
     public Device getDevice() {
